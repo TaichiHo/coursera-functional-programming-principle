@@ -26,7 +26,10 @@ object Lists {
     * @return The sum of all elements in `xs`
     */
   def sum(xs: List[Int]): Int = {
-    if (xs.isEmpty) 0 else xs.head + sum(xs.tail)
+    def helper(sumAcc: Int, xs: List[Int]): Int = {
+      if (xs.isEmpty) sumAcc else helper(sumAcc + xs.head, xs.tail)
+    }
+    helper(0, xs)
   }
 
   /**
@@ -43,15 +46,12 @@ object Lists {
     * @throws java.util.NoSuchElementException if `xs` is an empty list
     */
   def max(xs: List[Int]): Int = {
+    def helper(maxAcc: Int, xs: List[Int]): Int = {
+      if (xs.isEmpty) maxAcc else helper(if (maxAcc > xs.head) maxAcc else xs.head, xs.tail)
+    }
     if (xs.isEmpty) {
-      throw new NoSuchElementException
+      throw new scala.NoSuchElementException()
     }
-    if (xs.tail.isEmpty) {
-      return xs.head
-    }
-    val currentMax = max(xs.tail)
-
-    if (currentMax > xs.head) currentMax
-    else xs.head
+    helper(Int.MinValue, xs)
   }
 }
